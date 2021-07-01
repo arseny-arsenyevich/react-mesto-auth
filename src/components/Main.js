@@ -8,15 +8,17 @@ function Main (props) {
     const [userAvatar, setUserAvatar] = React.useState(null)
     const [cards, setCards] = React.useState([])
 
-    api.getUserInfo().then((res) => {
-        setUserName(res.name)
-        setUserDescription(res.about)
-        setUserAvatar(res.avatar)
-    })
+    React.useEffect(() => {
+        api.getUserInfo().then((res) => {
+            setUserName(res.name)
+            setUserDescription(res.about)
+            setUserAvatar(res.avatar)
+        }).catch((e) => {console.log(e)})
 
-    api.getCards().then((res) => {
-        setCards(res)
-    })
+        api.getCards().then((res) => {
+            setCards(res)
+        }).catch((e) => {console.log(e)})
+    }, [])
 
     return(
         <main className="main">
@@ -42,9 +44,9 @@ function Main (props) {
             <section className="elements" aria-label="места">
                 <p className="elements__empty">Добавьте картинки</p>
                 <ul className="elements__table">
-                    {cards.map((card, i) => {
+                    {cards.map((card) => {
                         return (
-                            <Card onCardClick={props.onCardClick} key={i} card={card} />
+                            <Card onCardClick={props.onCardClick} key={card._id} card={card} />
                         )
                     })}
                 </ul>

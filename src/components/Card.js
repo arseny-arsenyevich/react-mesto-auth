@@ -5,7 +5,7 @@ function Card (props) {
         <li className="elements__card">
         <button className="elements__trash"></button>
         <div className="elements__background">
-            <img className="elements__picture" onClick={() => {props.onCardClick(props.card.link)}} src={props.card.link} alt="пейзаж" />
+            <img className="elements__picture" onClick={() => {props.onCardClick([props.card.link, props.card.name])}} src={props.card.link} alt="пейзаж" />
         </div>
         <div className="elements__text-area">
             <h2 className="elements__title">{props.card.name}</h2>

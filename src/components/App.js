@@ -1,10 +1,10 @@
 import React from "react";
-import logo from "./images/logo.svg";
-import Header from "./components/Header";
-import Main from "./components/Main";
-import Footer from "./components/Footer";
-import PopupWithForm from "./components/PopupWithForm";
-import ImagePopup from "./components/ImagePopup";
+import logo from "../images/logo.svg";
+import Header from "./Header";
+import Main from "./Main";
+import Footer from "./Footer";
+import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
 
 function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false)
@@ -26,10 +26,11 @@ function App() {
     }
 
     const [selectedCard, setSelectedCard] = React.useState(null)
+    const [selectedCardName, setSelectedCardName] = React.useState(null)
 
     const handleCardClick = (src) => {
-        setSelectedCard(src)
-        console.log("11111")
+        setSelectedCard(src[0])
+        setSelectedCardName(src[1])
     }
 
     const closeAllPopups = () => {
@@ -61,8 +62,7 @@ function App() {
                 onClose={closeAllPopups}
                 title="Редактировать профиль"
                 buttonTxt="Сохранить"
-                children={
-                    <fieldset className="popup__input-container">
+                >
                         <label className="popup__field">
                             <input type="text" className="popup__form popup__form_input_name" name="name" id="form-name" placeholder="Имя" required minLength="2" maxLength="40" />
                             <span className="popup__error popup__error_type_form-name"></span>
@@ -71,9 +71,7 @@ function App() {
                             <input type="text" className="popup__form popup__form_input_profession" name="about" id="form-profession" placeholder="О себе" required minLength="2" maxLength="200" />
                             <span className="popup__error popup__error_type_form-profession"></span>
                         </label>
-                    </fieldset>
-                }
-            />
+            </PopupWithForm>
 
             <PopupWithForm 
                 name="card"
@@ -81,8 +79,7 @@ function App() {
                 onClose={closeAllPopups}
                 title="Новое место"
                 buttonTxt="Создать"
-                children={
-                    <fieldset className="popup__input-container">
+            >
                         <label className="popup__field">
                             <input type="text" className="popup__form popup__form_input_place" name="name" id="form-place" placeholder="Название" required minLength="2" maxLength="30" />
                             <span className="popup__error popup__error_type_form-place"></span>
@@ -91,9 +88,7 @@ function App() {
                             <input type="url" className="popup__form popup__form_input_link" name="link" id="form-link" placeholder="Ссылка на картинку" required />
                             <span className="popup__error popup__error_type_form-link"></span>
                         </label>
-                    </fieldset>
-                }
-            />
+            </PopupWithForm>
 
             <PopupWithForm 
                 name="avatar"
@@ -101,18 +96,16 @@ function App() {
                 onClose={closeAllPopups}
                 title="Обновить аватар"
                 buttonTxt="Сохранить"
-                children={
-                    <fieldset className="popup__input-container">
+            >
                         <label className="popup__field">
                             <input type="url" className="popup__form popup__form_input_avatar" name="avatar" id="form-avatar" placeholder="Ссылка на картинку" required />
                             <span className="popup__error popup__error_type_form-avatar"></span>
                         </label>
-                    </fieldset>
-                }
-            />
+            </PopupWithForm>
 
             <ImagePopup 
                 card={selectedCard}
+                cardName={selectedCardName}
                 onClose={closeAllPopups}
             />
 

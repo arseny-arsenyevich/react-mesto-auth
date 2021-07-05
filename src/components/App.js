@@ -55,7 +55,11 @@ function App() {
         document.removeEventListener("keydown", handleEscClose)
     }
 
-    const [currentUser, setCurrentUser] = React.useState({})
+    const [currentUser, setCurrentUser] = React.useState({
+        name: "",
+        about: "",
+        avatar: ""
+    })
 
     const handleUpdateUser = (data) => {
         api.redactProfile(data)
@@ -158,21 +162,12 @@ function App() {
             {/* <PopupWithForm 
                 name="card"
                 onClose={closeAllPopups}
-                //isOpen={isEditAvatarPopupOpen ? "popup_opened" : ""}
+                isOpen={isEditAvatarPopupOpen}
                 isOpen={false}
                 title="Вы уверены?"
                 buttonTxt="Да"
             /> */}
-            {/* <div className="popup popup_content_delete-card">
-                <div className="popup__container popup__container_position_center">
-                    <button className="popup__exit popup__exit_content_card" type="button"></button>
-                    <h2 className="popup__heading">Вы уверены?</h2>
-                    <form className="popup__forms popup__forms_content_delete-card" name="forms">
-                        <button type="submit" className="popup__save-button popup__save-button_content_delete-card">Да</button>
-                    </form>
-                </div>
-            </div> */}
-
+            
         </section>
     </div>
     </CurrentUserContext.Provider>

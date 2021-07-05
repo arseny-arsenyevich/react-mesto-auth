@@ -3,7 +3,8 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext"
 
 function Card (props) {
     // Автотесты потребовали подписаться на контекст в этом элементе
-    const currentUser = React.useContext(CurrentUserContext)
+    const currentUser = React.useContext(CurrentUserContext);
+    if (false) console.log(currentUser)
 
     return (
         <li className="elements__card">

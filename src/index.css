@@ -22,6 +22,7 @@
 @import url("./blocks/elements/__table/elements__table.css");
 @import url("./blocks/elements/__card/elements__card.css");
 @import url("./blocks/elements/__trash/elements__trash.css");
+@import url("./blocks/elements/__trash/_hidden/elements__trash_hidden.css");
 @import url("./blocks/elements/__background/elements__background.css");
 @import url("./blocks/elements/__picture/elements__picture.css");
 @import url("./blocks/elements/__text-area/elements__text-area.css");

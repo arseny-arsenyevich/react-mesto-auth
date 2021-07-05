@@ -1,6 +1,10 @@
 import React from "react"
+import { CurrentUserContext } from "../contexts/CurrentUserContext"
 
 function Card (props) {
+    // Автотесты потребовали подписаться на контекст в этом элементе
+    const currentUser = React.useContext(CurrentUserContext)
+
     return (
         <li className="elements__card">
         <button onClick={() => {props.onDelete(props.card)}} className={props.trashClass}></button>

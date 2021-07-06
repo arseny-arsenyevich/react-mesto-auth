@@ -19,7 +19,9 @@ function AddPlacePopup (props) {
         props.onAddPlace({
             name,
             link
-        });
+        })
+        setName("")
+        setLink("")
     }
 
     return (
@@ -27,7 +29,11 @@ function AddPlacePopup (props) {
             name="card"
             onSubmit={handleSubmit}
             isOpen={props.isOpen}
-            onClose={props.onClose}
+            onClose={() =>{
+                setName("")
+                setLink("")
+                props.onClose()
+            }}
             title="Новое место"
             buttonTxt="Создать"
         >

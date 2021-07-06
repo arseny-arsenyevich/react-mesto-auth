@@ -30,21 +30,10 @@ function Main (props) {
                 <p className="elements__empty">Добавьте картинки</p>
                 <ul className="elements__table">
                     {props.cards.map((card) => {
-                        const isOwn = card.owner._id === currentUser._id;
-                        const cardDeleteButtonClassName = (
-                            `elements__trash ${!isOwn ? 'elements__trash_hidden' : ''}`
-                        ); 
-                        const isLiked = card.likes.some(i => i._id === currentUser._id);
-                        const cardLikeButtonClassName = (
-                            `elements__like-button ${isLiked ? 'elements__like-button_active' : ''}`
-                        );
-
                         return (
                             <Card 
-                                likeClass={cardLikeButtonClassName} 
                                 onCardLike={props.onCardLike}
                                 onDelete={props.onCardDelete}
-                                trashClass={cardDeleteButtonClassName} 
                                 onCardClick={props.onCardClick} 
                                 key={card._id} 
                                 card={card} 

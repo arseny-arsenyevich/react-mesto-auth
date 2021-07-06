@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import logo from "../images/logo.svg";
 import Header from "./Header";
 import Main from "./Main";
@@ -11,11 +11,11 @@ import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-    const handleEscClose = (evt) => {
+    const handleEscClose = useCallback((evt) => {
         if (evt.key === "Escape") {
             closeAllPopups()
         }
-    }
+    }, [])
 
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false)
 

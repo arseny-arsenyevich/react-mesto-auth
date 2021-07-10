@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { Switch, Route } from 'react-router-dom';
 import logo from "../images/logo.svg";
 import Header from "./Header";
 import Main from "./Main";
@@ -118,10 +119,16 @@ function App() {
     return (
     <div className="App">
     <CurrentUserContext.Provider value={currentUser}>
-
+    <Switch>
+    <Route exact path="/">
+        <div className="page">
+        <Header logoPic={logo} headerTitle="Регистрация" />
+        </div>
+    </Route>
+    <Route path="/app">
     <div className="page">
         <Header logoPic={logo} />
-
+        
         <Main 
             cards={cards}
             onCardLike={handleCardLike}
@@ -170,6 +177,8 @@ function App() {
             
         </section>
     </div>
+    </Route>
+    </Switch>
     </CurrentUserContext.Provider>
     </div>
     );

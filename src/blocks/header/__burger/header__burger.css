@@ -1,0 +1,12 @@
+.header__burger {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 34px 0 0;
+}
+
+@media screen and (min-width: 577px) {
+    .header__burger {
+        padding: 51px 0 0;
+    }
+}

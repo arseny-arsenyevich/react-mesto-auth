@@ -18,16 +18,16 @@ function EditAvatarPopup(props) {
             onClose={props.onClose}
             onSubmit={handleSubmit}
         >
-            <label className="popup__field">
+            <label className="form__field">
                 <input 
                     ref={avatarUrl}
                     type="url" 
-                    className="popup__form popup__form_input_avatar" 
+                    className="form__input" 
                     name="avatar" id="form-avatar" 
                     placeholder="Ссылка на картинку" 
                     required 
                 />
-                <span className="popup__error popup__error_type_form-avatar"></span>
+                <span className="form__error form__error_type_form-avatar"></span>
             </label>
         </PopupWithForm>
     )

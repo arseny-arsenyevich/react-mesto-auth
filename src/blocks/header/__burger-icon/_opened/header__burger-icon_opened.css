@@ -1,0 +1,13 @@
+.header__burger-icon_opened span {
+    opacity: 0;
+}
+
+.header__burger-icon_opened::before {
+    top: 9px;
+    transform: rotate(45deg);
+}
+
+.header__burger-icon_opened::after {
+    bottom: 9px;
+    transform: rotate(-45deg);
+}

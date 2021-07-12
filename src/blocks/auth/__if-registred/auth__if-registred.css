@@ -1,0 +1,22 @@
+.auth__if-registred {
+    display: block;
+    padding: 20px 0 40px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 0;
+    transition: opacity .5s ease;
+    text-decoration: none;
+}
+
+.auth__if-registred:hover {
+    opacity: 0.8;
+}
+
+@media screen and (min-width: 1000px) {
+    .auth__if-registred {
+        padding: 15px 0 80px;
+    }
+}

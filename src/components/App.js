@@ -1,6 +1,8 @@
 import React, { useCallback } from "react";
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import logo from "../images/logo.svg";
+import success from "../images/auth-success.svg";
+import fail from "../images/auth-fail.svg";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -10,6 +12,10 @@ import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import ProtectedRoute from "./ProtectedRoute";
+import Login from "./Login";
+import Register from "./Register";
+import InfoToolTip from "./InfoTooltip";
 
 function App() {
     const handleEscClose = useCallback((evt) => {
@@ -116,19 +122,35 @@ function App() {
             .catch((e) => {console.log(e)})
     }, [])
 
+    // ------------------------------------------------------------------------
+
     return (
     <div className="App">
-    <CurrentUserContext.Provider value={currentUser}>
-    <Switch>
-    <Route exact path="/">
-        <div className="page">
-        <Header logoPic={logo} headerTitle="Регистрация" />
-        </div>
-    </Route>
-    <Route path="/app">
     <div className="page">
-        <Header logoPic={logo} />
+    <CurrentUserContext.Provider value={currentUser}>
+
+    <Switch>
+    <Route exact path="/"><Redirect to="/cards" /></Route>
+
+    {/* Регистрация */}
+    <Route path="/sign-up">
+        <Header logoPic={logo} headerLinkTitle="Войти" headerLink="/sign-in"/>
+        <Register />
+    </Route>
         
+    {/* Вход */}
+    <Route  path="/sign-in">
+        <Header logoPic={logo} headerLinkTitle="Регистрация" headerLink="/sign-up"/>
+        <Login />
+    </Route>
+
+    <Route path="/cards">
+        <Header  
+            logoPic={logo}
+            headerLinkTitle="Выйти" 
+            headerLink="/sign-in" 
+            headerEmail='placeholder@mail.ru'
+        />
         <Main 
             cards={cards}
             onCardLike={handleCardLike}
@@ -138,48 +160,50 @@ function App() {
             onAddPlace={handleAddPlaceClick} 
             onCardClick={handleCardClick}
         />
-
         <Footer />
-
-        <section className="popups" aria-label="всплывающие окна">
-            <EditProfilePopup
-                isOpen={isEditProfilePopupOpen}
-                onClose={closeAllPopups}
-                onUpdateUser={handleUpdateUser}
-            />
-
-            <EditAvatarPopup
-                isOpen={isEditAvatarPopupOpen}
-                onClose={closeAllPopups}
-                onUpdateAvatar={handleUpdateAvatar}
-            />
-
-            <AddPlacePopup 
-                isOpen={isAddPlaceOpen}
-                onClose={closeAllPopups}
-                onAddPlace={handleAddPlaceSubmit}
-            />
-
-            <ImagePopup 
-                card={selectedCard}
-                cardName={selectedCardName}
-                onClose={closeAllPopups}
-            />
-
-            {/* <PopupWithForm 
-                name="card"
-                onClose={closeAllPopups}
-                isOpen={isEditAvatarPopupOpen}
-                isOpen={false}
-                title="Вы уверены?"
-                buttonTxt="Да"
-            /> */}
-            
-        </section>
-    </div>
     </Route>
+
+    <ProtectedRoute path="*">
+        <h1>404:(</h1>
+    </ProtectedRoute>
     </Switch>
+
+    <section className="popups" aria-label="всплывающие окна">
+        <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+        />
+        <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar}
+        />
+        <AddPlacePopup 
+            isOpen={isAddPlaceOpen}
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+        />
+        <ImagePopup 
+            card={selectedCard}
+            cardName={selectedCardName}
+            onClose={closeAllPopups}
+        />
+        {/* <PopupWithForm 
+            name="card"
+            onClose={closeAllPopups}
+            isOpen={isEditAvatarPopupOpen}
+            isOpen={false}
+            title="Вы уверены?"
+            buttonTxt="Да"
+        /> */}
+        <InfoToolTip
+            requestPic={success}
+        />
+    </section>
+
     </CurrentUserContext.Provider>
+    </div>
     </div>
     );
 }

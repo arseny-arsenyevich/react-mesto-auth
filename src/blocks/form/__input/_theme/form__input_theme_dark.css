@@ -1,0 +1,9 @@
+.form__input_theme_dark {
+    border-bottom: 2px solid #CCCCCC;
+    color: #FFFFFF;
+    outline-color: inherit;
+}
+
+.form__input_theme_dark::placeholder {
+    color: #CCCCCC;
+}

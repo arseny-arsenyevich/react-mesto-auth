@@ -1,0 +1,16 @@
+.form__save-button_theme_dark {
+    color: #000000;
+    background-color: #FFFFFF;
+    margin: 216px auto 15px;
+    width: 100%;
+    padding: 13px 0;
+}
+
+@media screen and (min-width: 1000px) {
+    .form__save-button_theme_dark {
+        margin: 173px auto 20px;
+        font-size: 18px;
+        line-height: 22px;
+        padding: 16px 0;
+    }
+}

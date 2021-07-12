@@ -1,9 +1,0 @@
-.popup__field {
-    display: flex;
-    margin: 30px 0 0;
-    position: relative;
-}
-
-.popup__field:first-child {
-    margin: 0;
-}

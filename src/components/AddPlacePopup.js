@@ -37,12 +37,12 @@ function AddPlacePopup (props) {
             title="Новое место"
             buttonTxt="Создать"
         >
-            <label className="popup__field">
+            <label className="form__field">
                 <input 
                     value={name}
                     onChange={handleChangeName}
                     type="text" 
-                    className="popup__form popup__form_input_place" 
+                    className="form__input" 
                     name="name" 
                     id="form-place" 
                     placeholder="Название" 
@@ -50,20 +50,20 @@ function AddPlacePopup (props) {
                     minLength="2" 
                     maxLength="30" 
                 />
-                <span className="popup__error popup__error_type_form-place"></span>
+                <span className="form__error form__error_type_form-place"></span>
             </label>
-            <label className="popup__field">
+            <label className="form__field">
                 <input 
                     value={link}
                     onChange={handleChangeLink}
                     type="url" 
-                    className="popup__form popup__form_input_link" 
+                    className="form__input" 
                     name="link" 
                     id="form-link" 
                     placeholder="Ссылка на картинку" 
                     required 
                 />
-                <span className="popup__error popup__error_type_form-link"></span>
+                <span className="form__error form__error_type_form-link"></span>
             </label>
     </PopupWithForm>
     )

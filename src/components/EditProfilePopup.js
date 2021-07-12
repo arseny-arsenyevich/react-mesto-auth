@@ -39,12 +39,12 @@ function EditProfilePopup (props) {
         title="Редактировать профиль"
         buttonTxt="Сохранить"
         >
-            <label className="popup__field">
+            <label className="form__field">
                 <input 
                     value={name}
                     onChange={handleChangeName}
                     type="text" 
-                    className="popup__form popup__form_input_name" 
+                    className="form__input" 
                     name="name" 
                     id="form-name" 
                     placeholder="Имя" 
@@ -52,14 +52,14 @@ function EditProfilePopup (props) {
                     minLength="2" 
                     maxLength="40" 
                 />
-                <span className="popup__error popup__error_type_form-name"></span>
+                <span className="form__error form__error_type_form-name"></span>
             </label>
-            <label className="popup__field">
+            <label className="form__field">
                 <input 
                     value={description}
                     onChange={handleChangeDescription}
                     type="text" 
-                    className="popup__form popup__form_input_profession" 
+                    className="form__input" 
                     name="about" 
                     id="form-profession" 
                     placeholder="О себе" 

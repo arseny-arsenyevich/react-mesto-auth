@@ -10,21 +10,21 @@ class Api {
 
     getUserInfo() {
         return fetch(`${this._url}/users/me`, {
-            method: "GET",
+            method: 'GET',
             headers: this._headers,
         }).then(this._checkResponse)
     }
 
     getCards() {
         return fetch(`${this._url}/cards`, {
-            method: "GET",
+            method: 'GET',
             headers: this._headers,
         }).then(this._checkResponse)
     }   
     
     redactProfile({name, about}) {
         return fetch(`${this._url}/users/me`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 name: `${name}`,
@@ -35,7 +35,7 @@ class Api {
 
     redactAvatar({avatar}) {
         return fetch(`${this._url}/users/me/avatar`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 avatar: `${avatar}`,
@@ -45,7 +45,7 @@ class Api {
 
     addCard({name, link}) {
         return fetch(`${this._url}/cards`, {
-            method: "POST",
+            method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
                 name: `${name}`,
@@ -56,24 +56,24 @@ class Api {
 
     deleteCard(cardId) {
         return fetch(`${this._url}/cards/${cardId}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: this._headers,
             }).then(this._checkResponse)
     }
 
     changeLikeCardStatus(cardId, isLiked) {
         return fetch(`${this._url}/cards/likes/${cardId}`, {
-            method: isLiked ? "DELETE" : "PUT",
+            method: isLiked ? 'DELETE' : 'PUT',
             headers: this._headers,
         }).then(this._checkResponse)
     }
 }
 
 const api = new Api({
-    baseUrl: "https://mesto.nomoreparties.co/v1/cohort-24",
+    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-24',
     headers: {
-        authorization: "43e71961-3715-4de8-9b86-f45dfa570664",
-        "Content-Type": "application/json"
+        'authorization': '43e71961-3715-4de8-9b86-f45dfa570664',
+        'Content-Type': 'application/json'
     }
 })
 

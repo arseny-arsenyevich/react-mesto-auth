@@ -1,9 +1,9 @@
-import React from "react"
+import React from 'react'
 
-function Footer ({logoPic}) {
+function Footer () {
     return(
-        <footer className="footer footer_position_center">
-            <p className="footer__copy">&copy; 2021 Mesto Russia</p>
+        <footer className='footer footer_position_center'>
+            <p className='footer__copy'>&copy; 2021 Mesto Russia</p>
         </footer>
     )
 }

@@ -6,6 +6,10 @@
     padding: 0;
     font-weight: 500;
     color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 250px;
+    text-overflow: ellipsis;
 }
 
 @media screen and (min-width: 577px) {

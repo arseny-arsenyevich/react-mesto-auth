@@ -1,18 +1,18 @@
-import React from "react"
+import React from 'react'
 
-function PopupWithForm (props) {
+function PopupWithForm ({ name, isOpen, onClose, onSubmit, title, children, buttonTxt }) {
     return (
-        <div className={`popup popup_content_${props.name} ${props.isOpen && "popup_opened"}`}
-            onClick={(e) => {if (e.target === e.currentTarget) props.onClose()}}
+        <div className={`popup popup_content_${name} ${isOpen && 'popup_opened'}`}
+            onClick={(e) => {if (e.target === e.currentTarget) onClose()}}
         >
-        <div className="popup__container popup__container_position_center">
-            <button className="popup__exit" type="button" onClick={props.onClose}></button>
-            <h2 className="popup__heading">{props.title}</h2>
-            <form onSubmit={props.onSubmit} className={`form form_content_${props.name}`} name={props.name}>
-                <fieldset className="form__input-container">
-                    {props.children}
+        <div className='popup__container popup__container_position_center'>
+            <button className='popup__exit' type='button' onClick={onClose}></button>
+            <h2 className='popup__heading'>{title}</h2>
+            <form onSubmit={onSubmit} className={`form form_content_${name}`} name={name}>
+                <fieldset className='form__input-container'>
+                    {children}
                 </fieldset>
-                <button type="submit" className="form__save-button">{props.buttonTxt}</button>
+                <button type='submit' className='form__save-button'>{buttonTxt}</button>
             </form>
         </div>
     </div>

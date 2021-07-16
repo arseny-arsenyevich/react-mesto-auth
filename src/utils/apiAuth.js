@@ -10,7 +10,7 @@ class ApiAuth {
 
     signUp({password, email}) {
         return fetch(`${this._url}/signup`, {
-            method: "POST",
+            method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
                 password: `${password}`,
@@ -21,7 +21,7 @@ class ApiAuth {
 
     signIn({password, email}) {
         return fetch(`${this._url}/signin`, {
-            method: "POST",
+            method: 'POST',
             headers: this._headers,
             body: JSON.stringify({
                 password: `${password}`,
@@ -29,12 +29,22 @@ class ApiAuth {
             })
         }).then(this._checkResponse)
     }
+        
+    checkToken() {
+        return fetch(`${this._url}/users/me`, {
+            method: 'GET',
+            headers: {
+                ...this._headers,
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(this._checkResponse)
+    }
 }
 
 const apiAuth = new ApiAuth({
-    baseUrl: "https://auth.nomoreparties.co/",
+    baseUrl: 'https://auth.nomoreparties.co',
     headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
     }
 })
 

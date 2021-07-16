@@ -6,6 +6,12 @@
     padding: 13px 0;
 }
 
+.form__save-button_theme_dark:disabled {
+    color: #E5E5E5;
+    pointer-events: none;
+    background-color: #7e7e85;
+}
+
 @media screen and (min-width: 1000px) {
     .form__save-button_theme_dark {
         margin: 173px auto 20px;

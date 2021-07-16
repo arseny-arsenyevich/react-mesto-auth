@@ -11,7 +11,7 @@
     background: rgba(0, 0, 0, 0.8) no-repeat center;
     background-image: url("../../../images/avatar-edit.svg");
     opacity: 0;
-    transition: opacity .5s ease;
+    transition: opacity .2s ease;
 }
 
 .profile__picture-edit-button:hover {

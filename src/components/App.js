@@ -18,8 +18,6 @@ import Register from './Register';
 import InfoToolTip from './InfoTooltip';
 import apiAuth from '../utils/apiAuth';
 
-// Какие изменения? Это первая итерация
-
 function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
@@ -126,6 +124,53 @@ function App() {
             }).catch((e) => {console.log(e)})
     } 
 
+    const handleRegister = ({email, password}, evt, setButtonState) => {
+        evt.preventDefault()
+        setButtonState(true)
+        apiAuth.signUp({email, password})
+            .then(res => {
+                handleAuthStatusPopup({result: true, text: 'Вы успешно зарегистрировались!'})
+                setTimeout(() =>
+                apiAuth.signIn({email, password})
+                    .then(data => {
+                        localStorage.setItem('token', data.token);
+                        setLoggedIn(true)
+                        setEmail(res.data.email)
+                        history.push('/cards')
+                    })
+                    .catch(res => history.push('/sign-in'))
+                , 500)
+            })
+            .catch(res => {
+                handleAuthStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'})
+                console.log(res)
+            })
+            .finally(() => setButtonState(false))
+    }
+    
+    const handleLogin = ({email, password}, evt, setButtonState) => {
+        evt.preventDefault()
+        setButtonState(true)
+        apiAuth.signIn({email, password})
+            .then(res => {
+                localStorage.setItem('token', res.token);
+
+                apiAuth.checkToken()
+                .then((info) => {
+                    setEmail(info.data.email)
+                })
+                .catch((e) => {console.log(e)})
+
+                setLoggedIn(true)
+                history.push('/cards')
+            })
+            .catch((res) => {
+                handleAuthStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'})
+                console.log(res)
+            })
+            .finally(() => setButtonState(false))
+    }
+
     useEffect(() => {
         api.getCards().then((res) => {
             setCards(res)
@@ -156,19 +201,18 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
 
     <Switch>
-    {/* <Route exact path='/react-mesto-auth'><Redirect to='/cards' /></Route> */}
     <Route exact path='/'><Redirect to='/cards' /></Route>
 
     {/* Регистрация */}
     <Route path='/sign-up'>
         <Header logoPic={logo} headerLinkTitle='Войти' headerLink='/sign-in'/>
-        <Register setLoggedIn={setLoggedIn} handleStatusPopup={handleAuthStatusPopup} setEmail={setEmail} />
+        <Register onSubmit={handleRegister} />
     </Route>
         
     {/* Вход */}
     <Route  path='/sign-in'>
         <Header logoPic={logo} headerLinkTitle='Регистрация' headerLink='/sign-up'/>
-        <Login setLoggedIn={setLoggedIn} handleStatusPopup={handleAuthStatusPopup} setEmail={setEmail} />
+        <Login onSubmit={handleLogin} />
     </Route>
 
     <ProtectedRoute path='/cards' loggedIn={loggedIn}>

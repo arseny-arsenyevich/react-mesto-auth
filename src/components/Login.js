@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import apiAuth from '../utils/apiAuth'
 import { useHistory } from 'react-router-dom'
 
-function Login ({ setLoggedIn, handleStatusPopup, setEmail }) {
+function Login ({ onSubmit }) {
     const history = useHistory()
 
     const [email, setMail] = useState('')
@@ -17,33 +17,15 @@ function Login ({ setLoggedIn, handleStatusPopup, setEmail }) {
         setPassword(evt.target.value)
     }
 
-    const handleLogin = (evt) => {
-        evt.preventDefault()
-        setButtonState(true)
-        apiAuth.signIn({email, password})
-            .then(res => {
-                localStorage.setItem('token', res.token);
 
-                apiAuth.checkToken()
-                .then((info) => {
-                    setEmail(info.data.email)
-                })
-                .catch((e) => {console.log(e)})
-
-                setLoggedIn(true)
-                history.push('/cards')
-            })
-            .catch((res) => {
-                handleStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'})
-                console.log(res)
-            })
-            .finally(() => setButtonState(false))
+    const handleSubmit = (evt) => {
+        onSubmit({email, password}, evt, setButtonState)
     }
 
     return (
         <div className='auth'>
             <h2 className='auth__heading'>Вход</h2>
-            <form onSubmit={handleLogin} className='form'>
+            <form onSubmit={handleSubmit} className='form'>
                 <fieldset className='form__input-container form__input-container_theme_dark'>
                 <label className='form__field'>
                 <input 

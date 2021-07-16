@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import apiAuth from '../utils/apiAuth'
 import { Link, useHistory } from 'react-router-dom'
 
-function Register ({ handleStatusPopup, setLoggedIn, setEmail }) {
+function Register ({ onSubmit }) {
     const history = useHistory()
 
     const [email, setMail] = useState('')
@@ -17,35 +17,14 @@ function Register ({ handleStatusPopup, setLoggedIn, setEmail }) {
         setPassword(evt.target.value)
     }
 
-    const handleRegister = (evt) => {
-        evt.preventDefault()
-        setButtonState(true)
-        apiAuth.signUp({email, password})
-            .then(res => {
-                handleStatusPopup({result: true, text: 'Вы успешно зарегистрировались!'})
-                setTimeout(() =>
-                apiAuth.signIn({email, password})
-                    .then(data => {
-                        localStorage.setItem('token', data.token);
-                        setLoggedIn(true)
-                        setEmail(res.data.email)
-                        history.push('/cards')
-                    })
-                    .catch(res => history.push('/sign-in'))
-                    //задержка выяснена опытным путем
-                , 500)
-            })
-            .catch(res => {
-                handleStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'})
-                console.log(res)
-            })
-            .finally(() => setButtonState(false))
+    const handleSubmit = (evt) => {
+        onSubmit({email, password}, evt, setButtonState)
     }
 
     return (
         <div className='auth'>
             <h2 className='auth__heading'>Регистрация</h2>
-            <form onSubmit={handleRegister} className='form'>
+            <form onSubmit={handleSubmit} className='form'>
                 <fieldset className='form__input-container form__input-container_theme_dark'>
                 <label className='form__field'>
                 <input 

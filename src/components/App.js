@@ -154,7 +154,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
 
     <Switch>
-    <Route exact path='/react-mesto-auth'><Redirect to='/cards' /></Route>
+    {/* <Route exact path='/react-mesto-auth'><Redirect to='/cards' /></Route> */}
     <Route exact path='/'><Redirect to='/cards' /></Route>
 
     {/* Регистрация */}

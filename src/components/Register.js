@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import apiAuth from '../utils/apiAuth'
 import { Link, useHistory } from 'react-router-dom'
 
-function Register ({ handleStatusPopup, setLoggedIn }) {
+function Register ({ handleStatusPopup, setLoggedIn, setEmail }) {
     const history = useHistory()
 
     const [email, setMail] = useState('')
@@ -23,13 +23,12 @@ function Register ({ handleStatusPopup, setLoggedIn }) {
         apiAuth.signUp({email, password})
             .then(res => {
                 handleStatusPopup({result: true, text: 'Вы успешно зарегистрировались!'})
-                console.log('aboba')
                 setTimeout(() =>
                 apiAuth.signIn({email, password})
                     .then(data => {
                         localStorage.setItem('token', data.token);
                         setLoggedIn(true)
-                        console.log(data)
+                        setEmail(res.email)
                         history.push('/cards')
                     })
                     .catch(res => history.push('/sign-in'))

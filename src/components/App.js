@@ -19,42 +19,31 @@ import InfoToolTip from './InfoTooltip';
 import apiAuth from '../utils/apiAuth';
 
 function App() {
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
+    const [isAddPlaceOpen, setIsAddPlaceOpen] = useState(false)
+    const [selectedCard, setSelectedCard] = useState(null)
+    const [selectedCardName, setSelectedCardName] = useState(null)
+    const [isAuthStatusPopupOpen, setIsAuthStatusPopupOpen] = useState(false)
+    const [authStatusPic, setAuthStatusPic] = useState('')
+    const [authStatusText, setAuthStatusText] = useState('')
+
+    const [cards, setCards] = useState([])
+    const [currentUser, setCurrentUser] = useState({
+        name: '',
+        about: '',
+        avatar: ''
+    })
+    const [email, setEmail] = useState('')
+    const [loggedIn, setLoggedIn] = useState(false)
+    const history = useHistory()
+    
     const handleEscClose = useCallback((evt) => {
         if (evt.key === 'Escape') {
             closeAllPopups()
         }
     }, [])
-
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-
-    const handleEditAvatarClick = () => {
-        setIsEditAvatarPopupOpen(true)
-        document.addEventListener('keydown', handleEscClose)
-    }
-
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
-
-    const handleEditProfileClick = () => {
-        setIsEditProfilePopupOpen(true)
-        document.addEventListener('keydown', handleEscClose)
-    }
-
-    const [isAddPlaceOpen, setIsAddPlaceOpen] = useState(false)
-
-    const handleAddPlaceClick = () => {
-        setIsAddPlaceOpen(true)
-        document.addEventListener('keydown', handleEscClose)
-    }
-
-    const [selectedCard, setSelectedCard] = useState(null)
-    const [selectedCardName, setSelectedCardName] = useState(null)
-
-    const handleCardClick = (src) => {
-        setSelectedCard(src[0])
-        setSelectedCardName(src[1])
-        document.addEventListener('keydown', handleEscClose)
-    }
-
+        
     const closeAllPopups = () => {
         setIsEditAvatarPopupOpen(false)
         setIsEditProfilePopupOpen(false)
@@ -63,14 +52,29 @@ function App() {
         setIsAuthStatusPopupOpen(false)
         document.removeEventListener('keydown', handleEscClose)
     }
+    
+    const handleEditAvatarClick = () => {
+        setIsEditAvatarPopupOpen(true)
+        document.addEventListener('keydown', handleEscClose)
+    }
 
-    const [currentUser, setCurrentUser] = useState({
-        name: '',
-        about: '',
-        avatar: '',
-        email: '',
-        _id: ''
-    })
+
+    const handleEditProfileClick = () => {
+        setIsEditProfilePopupOpen(true)
+        document.addEventListener('keydown', handleEscClose)
+    }
+
+
+    const handleAddPlaceClick = () => {
+        setIsAddPlaceOpen(true)
+        document.addEventListener('keydown', handleEscClose)
+    }
+
+    const handleCardClick = (src) => {
+        setSelectedCard(src[0])
+        setSelectedCardName(src[1])
+        document.addEventListener('keydown', handleEscClose)
+    }
 
     const handleUpdateUser = (data) => {
         api.redactProfile(data)
@@ -96,7 +100,13 @@ function App() {
         }).catch((e) => {console.log(e)})
     }
 
-    const [cards, setCards] = useState([])
+    const handleAuthStatusPopup = ( {result, text} ) => {
+        setIsAuthStatusPopupOpen(true)
+        result ? setAuthStatusPic(success) : setAuthStatusPic(fail)
+        setAuthStatusText(text)
+        document.addEventListener('keydown', handleEscClose)
+    }
+
     
     const handleCardLike = (card) => {
         const isLiked = card.likes.some((i) => i._id === currentUser._id)
@@ -114,70 +124,32 @@ function App() {
             }).catch((e) => {console.log(e)})
     } 
 
-    const [infoReceived, setInfoReceived] = useState(false)
-
     useEffect(() => {
         api.getCards().then((res) => {
             setCards(res)
-            setInfoReceived(true)
         }).catch((e) => {console.log(e)})
     }, [])
 
     useEffect(() => {
         api.getUserInfo()
             .then((res) => {
-                setCurrentUser({...currentUser, ...res})
-                setInfoReceived(true)
+                setCurrentUser(res)
             })
             .catch((e) => {console.log(e)})
     }, [])
-
-
-    // const [obj, setObj] = useState({
-    //     a: 5,
-    //     b: 5
-    // })
-
-    // useEffect(() => {
-    //     setObj({...obj,c: 3, d: 4, v: 10})
-    // }, [isAddPlaceOpen])
-    
-    // useEffect(() => {
-    //     setObj({...obj,a: 1, b: 2, g:6})
-    // }, [])
-
-
-    // ------------------------------------------------------------------------
-
-    const [isAuthStatusPopupOpen, setIsAuthStatusPopupOpen] = useState(false)
-    const [authStatusPic, setAuthStatusPic] = useState('')
-    const [authStatusText, setAuthStatusText] = useState('')
-
-    const handleAuthStatusPopup = ( {result, text} ) => {
-        setIsAuthStatusPopupOpen(true)
-        result ? setAuthStatusPic(success) : setAuthStatusPic(fail)
-        setAuthStatusText(text)
-        document.addEventListener('keydown', handleEscClose)
-    }
-
-    const [loggedIn, setLoggedIn] = useState(false)
-
-    const history = useHistory()
 
     useEffect(() => {
         apiAuth.checkToken()
             .then((res) => {
                 setLoggedIn(true)
-                setCurrentUser({...currentUser, ...res.data})
+                setEmail(res.data.email)
                 history.push('/cards')
-                setInfoReceived(true)
             })
             .catch((e) => {console.log(e)})
-    }, [infoReceived])
+    }, [])
 
     return (
     <div className='App'>
-        {/* <h1>a:{obj.a}    b:{obj.b}    c:{obj.c}    d:{obj.d}    g:{obj.g} v:{obj.v}</h1> */}
     <div className='page'>
     <CurrentUserContext.Provider value={currentUser}>
 
@@ -187,13 +159,13 @@ function App() {
     {/* Регистрация */}
     <Route path='/sign-up'>
         <Header logoPic={logo} headerLinkTitle='Войти' headerLink='/sign-in'/>
-        <Register setLoggedIn={setLoggedIn} handleStatusPopup={handleAuthStatusPopup} />
+        <Register setLoggedIn={setLoggedIn} handleStatusPopup={handleAuthStatusPopup} setEmail={setEmail} />
     </Route>
         
     {/* Вход */}
     <Route  path='/sign-in'>
         <Header logoPic={logo} headerLinkTitle='Регистрация' headerLink='/sign-up'/>
-        <Login setLoggedIn={setLoggedIn} handleStatusPopup={handleAuthStatusPopup} />
+        <Login setLoggedIn={setLoggedIn} handleStatusPopup={handleAuthStatusPopup} setEmail={setEmail} />
     </Route>
 
     <ProtectedRoute path='/cards' loggedIn={loggedIn}>
@@ -202,6 +174,7 @@ function App() {
             logoPic={logo}
             headerLinkTitle='Выйти' 
             headerLink='/sign-in' 
+            email={email}
             headerBurger
         />
         <Main 

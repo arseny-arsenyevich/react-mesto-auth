@@ -1,10 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
-function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLoggedIn }) {
-    const currentUser = useContext(CurrentUserContext)
-    
+function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLoggedIn, email }) {
     const [burgerState, setBurgerState] = useState(false)
 
     const handleChangeBurgerState = (e) => {
@@ -22,7 +19,7 @@ function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLogged
                 header__burger_res_mobile 
                 ${burgerState && 'header__burger_opened'}`}
             >
-                {headerBurger && <p className='header__email'>{currentUser.email}</p>}
+                {headerBurger && <p className='header__email'>{email}</p>}
                 <Link 
                     to={headerLink}  
                     className='header__link header__link_theme_dark'
@@ -39,7 +36,7 @@ function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLogged
                     <img className='header__logo' src={logoPic} alt='логотип' />
                 </Link>
                 <div className={`header__burger ${headerBurger && 'header__burger_res_desktop'}`}>
-                    {headerBurger && <p className='header__email'>{currentUser.email}</p>}
+                    {headerBurger && <p className='header__email'>{email}</p>}
                     <Link 
                         to={headerLink} 
                         className={`header__link ${headerBurger && 'header__link_theme_dark'}`}

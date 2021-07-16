@@ -18,6 +18,8 @@ import Register from './Register';
 import InfoToolTip from './InfoTooltip';
 import apiAuth from '../utils/apiAuth';
 
+// Какие изменения? Это первая итерация
+
 function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)

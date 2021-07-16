@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLoggedIn, email }) {

@@ -1,9 +1,6 @@
 import React, {useState} from 'react'
-import { useHistory } from 'react-router-dom'
 
 function Login ({ onSubmit }) {
-    const history = useHistory()
-
     const [email, setMail] = useState('')
     const [password, setPassword] = useState('')
     const [buttonState, setButtonState] = useState(false)

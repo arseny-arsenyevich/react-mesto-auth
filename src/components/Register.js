@@ -28,7 +28,7 @@ function Register ({ handleStatusPopup, setLoggedIn, setEmail }) {
                     .then(data => {
                         localStorage.setItem('token', data.token);
                         setLoggedIn(true)
-                        setEmail(res.email)
+                        setEmail(res.data.email)
                         history.push('/cards')
                     })
                     .catch(res => history.push('/sign-in'))

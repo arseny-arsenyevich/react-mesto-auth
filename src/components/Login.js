@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import apiAuth from '../utils/apiAuth'
 import { useHistory } from 'react-router-dom'
 
 function Login ({ onSubmit }) {

@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import apiAuth from '../utils/apiAuth'
 import { Link, useHistory } from 'react-router-dom'
 
 function Register ({ onSubmit }) {

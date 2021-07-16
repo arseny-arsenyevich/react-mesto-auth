@@ -142,7 +142,7 @@ function App() {
                 , 500)
             })
             .catch(res => {
-                handleAuthStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'})
+                handleAuthStatusPopup({result: false, text: 'Что-то пошло не тапше! Попробуйте ещё раз.'})
                 console.log(res)
             })
             .finally(() => setButtonState(false))

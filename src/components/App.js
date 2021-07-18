@@ -10,12 +10,13 @@ import EditProfilePopup from './EditProfilePopup'
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
+import PopupWithDelete from './PopupWithDelete';
+import InfoToolTip from './InfoTooltip';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
-import InfoToolTip from './InfoTooltip';
 import apiAuth from '../utils/apiAuth';
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
     const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
     const [selectedCardName, setSelectedCardName] = useState(null);
+    const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+    const [cardToBeDeleted, setCardToBeDeleted] = useState(null);
     const [isAuthStatusPopupOpen, setIsAuthStatusPopupOpen] = useState(false);
     const [authStatusPic, setAuthStatusPic] = useState('');
     const [authStatusText, setAuthStatusText] = useState('');
@@ -47,7 +50,8 @@ function App() {
         setIsEditAvatarPopupOpen(false);
         setIsEditProfilePopupOpen(false);
         setIsAddPlaceOpen(false);
-        setSelectedCard(null);
+        setIsImagePopupOpen(false);
+        setIsDeletePopupOpen(false);
         setIsAuthStatusPopupOpen(false);
 
         document.removeEventListener('keydown', handleEscClose);
@@ -78,6 +82,12 @@ function App() {
         
         document.addEventListener('keydown', handleEscClose);
     }
+    
+    const handleDeletePopupOpen = (card) => {
+        setIsDeletePopupOpen(true)
+
+        setCardToBeDeleted(card)
+    } 
 
     const handleAuthStatusPopup = ({ result, text }) => {
         setIsAuthStatusPopupOpen(true);
@@ -122,11 +132,16 @@ function App() {
         .catch((e) => console.log(e))
     }
 
-    const handleCardDelete = (card) => {
-        api.deleteCard(card._id)
-        .then(() => setCards(state => state.filter(c => c._id !== card._id)))
+    const handleCardDelete = (setButtonState) => {
+        setButtonState(true)
+        api.deleteCard(cardToBeDeleted._id)
+        .then(() => setCards(state => state.filter(c => c._id !== cardToBeDeleted._id)))
         .catch(e => console.log(e))
-    } 
+        .finally(() => {
+            closeAllPopups()
+            setButtonState(false)
+        })
+    }
 
     const handleSignInRequest = (res) => {
         localStorage.setItem('token', res.token);
@@ -144,7 +159,7 @@ function App() {
         apiAuth.signUp({ email, password })
         .then(() => {
             handleAuthStatusPopup({ result: true, text: 'Вы успешно зарегистрировались!' });
-            // Автворизация при успешной регистрации
+            // Авторизация при успешной регистрации
             setTimeout(() =>
             apiAuth.signIn({ email, password })
             .then(data => handleSignInRequest(data))
@@ -168,18 +183,7 @@ function App() {
         })
         .finally(() => setButtonState(false))
     }
-
-    // useEffect(() => {
-    //     api.getCards().then(res => setCards(res))
-    //     .catch(e => console.log(e))
-    // }, [])
-
-    // useEffect(() => {
-    //     api.getUserInfo()
-    //         .then(res => setCurrentUser(res))
-    //         .catch(e => console.log(e))
-    // }, [])
-    
+ 
     useEffect(() => {
         apiAuth.checkToken()
         .then((res) => {
@@ -230,7 +234,7 @@ function App() {
         <Main 
             cards={cards}
             onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
+            onCardDelete={handleDeletePopupOpen}
             onEditProfile={handleEditProfileClick} 
             onEditAvatar={handleEditAvatarClick} 
             onAddPlace={handleAddPlaceClick} 
@@ -267,14 +271,11 @@ function App() {
             card={selectedCard}
             cardName={selectedCardName}
         />
-        {/* <PopupWithForm 
-            name='card'
+        <PopupWithDelete 
+            isOpen={isDeletePopupOpen}
             onClose={closeAllPopups}
-            isOpen={isEditAvatarPopupOpen}
-            isOpen={false}
-            title='Вы уверены?'
-            buttonTxt='Да'
-        /> */}
+            onDelete={handleCardDelete}
+        />
         <InfoToolTip
             isOpen={isAuthStatusPopupOpen}
             onClose={closeAllPopups}

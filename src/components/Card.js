@@ -15,7 +15,9 @@ function Card ({ card, onDelete, onCardClick, onCardLike }) {
 
     return (
         <li className='elements__card'>
-        <button onClick={() => {onDelete(card)}} className={cardDeleteButtonClassName}></button>
+        <button onClick={() => {onDelete(card)}} className={cardDeleteButtonClassName}>
+            <div className='elements__trash-icon' />
+        </button>
         <div className='elements__background'>
             <img className='elements__picture' onClick={() => {onCardClick([card.link, card.name])}} src={card.link} alt='пейзаж' />
         </div>

@@ -15,7 +15,9 @@ function Register ({ onSubmit }) {
     }
 
     const handleSubmit = (e) => {
-        onSubmit({ email, password }, e, setButtonState);
+        e.preventDefault()
+
+        onSubmit({ email, password }, setButtonState);
     }
 
     return (

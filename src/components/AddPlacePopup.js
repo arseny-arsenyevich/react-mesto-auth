@@ -2,26 +2,24 @@ import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup ({ onAddPlace, isOpen, onClose }) {
-    const [name, setName] = useState('')
+    const [name, setName] = useState('');
 
-    const handleChangeName = (evt) => {
-        setName(evt.target.value)
+    const handleChangeName = (e) => {
+        setName(e.target.value);
     }
 
-    const [link, setLink] = useState('')
+    const [link, setLink] = useState('');
 
-    const handleChangeLink = (evt) => {
-        setLink(evt.target.value)
+    const handleChangeLink = (e) => {
+        setLink(e.target.value);
     }
 
-    const handleSubmit = (evt) => {
-        evt.preventDefault()
-        onAddPlace({
-            name,
-            link
-        })
-        setName('')
-        setLink('')
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        onAddPlace({ name, link });
+        setName('');
+        setLink('');
     }
 
     return (
@@ -30,9 +28,9 @@ function AddPlacePopup ({ onAddPlace, isOpen, onClose }) {
             onSubmit={handleSubmit}
             isOpen={isOpen}
             onClose={() =>{
-                setName('')
-                setLink('')
-                onClose()
+                setName('');
+                setLink('');
+                onClose();
             }}
             title='Новое место'
             buttonTxt='Создать'

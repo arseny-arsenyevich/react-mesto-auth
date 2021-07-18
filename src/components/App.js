@@ -19,180 +19,183 @@ import InfoToolTip from './InfoTooltip';
 import apiAuth from '../utils/apiAuth';
 
 function App() {
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
-    const [isAddPlaceOpen, setIsAddPlaceOpen] = useState(false)
-    const [selectedCard, setSelectedCard] = useState(null)
-    const [selectedCardName, setSelectedCardName] = useState(null)
-    const [isAuthStatusPopupOpen, setIsAuthStatusPopupOpen] = useState(false)
-    const [authStatusPic, setAuthStatusPic] = useState('')
-    const [authStatusText, setAuthStatusText] = useState('')
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+    const [isAddPlaceOpen, setIsAddPlaceOpen] = useState(false);
+    const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+    const [selectedCard, setSelectedCard] = useState(null);
+    const [selectedCardName, setSelectedCardName] = useState(null);
+    const [isAuthStatusPopupOpen, setIsAuthStatusPopupOpen] = useState(false);
+    const [authStatusPic, setAuthStatusPic] = useState('');
+    const [authStatusText, setAuthStatusText] = useState('');
 
-    const [cards, setCards] = useState([])
+    const [cards, setCards] = useState([]);
     const [currentUser, setCurrentUser] = useState({
         name: '',
         about: '',
         avatar: ''
-    })
-    const [email, setEmail] = useState('')
-    const [loggedIn, setLoggedIn] = useState(false)
-    const history = useHistory()
+    });
+    const [email, setEmail] = useState('');
+    const [loggedIn, setLoggedIn] = useState(false);
+    const history = useHistory();
     
-    const handleEscClose = useCallback((evt) => {
-        if (evt.key === 'Escape') {
-            closeAllPopups()
-        }
+    const handleEscClose = useCallback((e) => {
+        if (e.key === 'Escape') closeAllPopups();
     }, [])
         
     const closeAllPopups = () => {
-        setIsEditAvatarPopupOpen(false)
-        setIsEditProfilePopupOpen(false)
-        setIsAddPlaceOpen(false)
-        setSelectedCard(null)
-        setIsAuthStatusPopupOpen(false)
-        document.removeEventListener('keydown', handleEscClose)
+        setIsEditAvatarPopupOpen(false);
+        setIsEditProfilePopupOpen(false);
+        setIsAddPlaceOpen(false);
+        setSelectedCard(null);
+        setIsAuthStatusPopupOpen(false);
+
+        document.removeEventListener('keydown', handleEscClose);
     }
     
     const handleEditAvatarClick = () => {
-        setIsEditAvatarPopupOpen(true)
-        document.addEventListener('keydown', handleEscClose)
+        setIsEditAvatarPopupOpen(true);
+        
+        document.addEventListener('keydown', handleEscClose);
     }
-
-
+    
     const handleEditProfileClick = () => {
-        setIsEditProfilePopupOpen(true)
-        document.addEventListener('keydown', handleEscClose)
+        setIsEditProfilePopupOpen(true);
+        
+        document.addEventListener('keydown', handleEscClose);
     }
-
-
+    
     const handleAddPlaceClick = () => {
-        setIsAddPlaceOpen(true)
-        document.addEventListener('keydown', handleEscClose)
+        setIsAddPlaceOpen(true);
+        
+        document.addEventListener('keydown', handleEscClose);
+    }
+    
+    const handleCardClick = ([link, description]) => {
+        setIsImagePopupOpen(true);
+        setSelectedCard(link);
+        setSelectedCardName(description);
+        
+        document.addEventListener('keydown', handleEscClose);
     }
 
-    const handleCardClick = (src) => {
-        setSelectedCard(src[0])
-        setSelectedCardName(src[1])
-        document.addEventListener('keydown', handleEscClose)
+    const handleAuthStatusPopup = ({ result, text }) => {
+        setIsAuthStatusPopupOpen(true);
+        result ? setAuthStatusPic(success) : setAuthStatusPic(fail);
+        setAuthStatusText(text);
+        
+        document.addEventListener('keydown', handleEscClose);
     }
-
+    
     const handleUpdateUser = (data) => {
         api.redactProfile(data)
-            .then((res) => {
-                setCurrentUser({...currentUser, ...res})
-                closeAllPopups()
-            }).catch((e) => {console.log(e)})
+        .then((res) => {
+            setCurrentUser(res);
+            closeAllPopups();
+        })
+        .catch(e => console.log(e))
     }
 
     const handleUpdateAvatar = (data) => {
         api.redactAvatar(data)
         .then((res) => {
-            setCurrentUser({...currentUser, ...res})
-            closeAllPopups()
-        }).catch((e) => {console.log(e)})
+            setCurrentUser(res);
+            closeAllPopups();
+        })
+        .catch(e => console.log(e))
     }    
 
-    const handleAddPlaceSubmit = (data) => {
+    const handleAddPlaceSubmit = data => {
         api.addCard(data)
-        .then((res) => {
-            setCards([res, ...cards])
-            closeAllPopups()
-        }).catch((e) => {console.log(e)})
-    }
-
-    const handleAuthStatusPopup = ( {result, text} ) => {
-        setIsAuthStatusPopupOpen(true)
-        result ? setAuthStatusPic(success) : setAuthStatusPic(fail)
-        setAuthStatusText(text)
-        document.addEventListener('keydown', handleEscClose)
+        .then(res => {
+            setCards([res, ...cards]);
+            closeAllPopups();
+        })
+        .catch(e => console.log(e))
     }
 
     
     const handleCardLike = (card) => {
-        const isLiked = card.likes.some((i) => i._id === currentUser._id)
+        const isLiked = card.likes.some((i) => i._id === currentUser._id);
         api.changeLikeCardStatus(card._id, isLiked)
-            .then((newCard) => {
-                setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-            })
-            .catch((e) => {console.log(e)})
+        .then((newCard) => setCards(state => state.map((c) => c._id === card._id ? newCard : c)))
+        .catch((e) => console.log(e))
     }
 
     const handleCardDelete = (card) => {
         api.deleteCard(card._id)
-            .then(() => {
-                setCards((state) => state.filter((c) => c._id !== card._id));
-            }).catch((e) => {console.log(e)})
+        .then(() => setCards(state => state.filter(c => c._id !== card._id)))
+        .catch(e => console.log(e))
     } 
 
-    const handleRegister = ({email, password}, evt, setButtonState) => {
-        evt.preventDefault()
-        setButtonState(true)
-        apiAuth.signUp({email, password})
-            .then(res => {
-                handleAuthStatusPopup({result: true, text: 'Вы успешно зарегистрировались!'})
-                setTimeout(() =>
-                apiAuth.signIn({email, password})
-                    .then(data => {
-                        localStorage.setItem('token', data.token);
-                        setLoggedIn(true)
-                        setEmail(res.data.email)
-                        history.push('/cards')
-                    })
-                    .catch(res => history.push('/sign-in'))
-                , 500)
-            })
-            .catch(res => {
-                handleAuthStatusPopup({result: false, text: 'Что-то пошло не тапше! Попробуйте ещё раз.'})
-                console.log(res)
-            })
-            .finally(() => setButtonState(false))
+    const handleSignInRequest = (res) => {
+        localStorage.setItem('token', res.token);
+
+        apiAuth.checkToken()
+        .then(info => setEmail(info.data.email))
+        .catch(e => console.log(e))
+
+        setLoggedIn(true);
+        history.push('/cards');
+    }
+
+    const handleRegister = ({ email, password }, setButtonState) => {
+        setButtonState(true);
+        apiAuth.signUp({ email, password })
+        .then(() => {
+            handleAuthStatusPopup({ result: true, text: 'Вы успешно зарегистрировались!' });
+            // Автворизация при успешной регистрации
+            setTimeout(() =>
+            apiAuth.signIn({ email, password })
+            .then(data => handleSignInRequest(data))
+            .catch(() => history.push('/sign-in'))
+            , 500)
+        })
+        .catch((res) => {
+            handleAuthStatusPopup({ result: false, text: 'Что-то пошло не тапше! Попробуйте ещё раз.' });
+            console.log(res);
+        })
+        .finally(() => setButtonState(false))
     }
     
-    const handleLogin = ({email, password}, evt, setButtonState) => {
-        evt.preventDefault()
-        setButtonState(true)
-        apiAuth.signIn({email, password})
-            .then(res => {
-                localStorage.setItem('token', res.token);
-
-                apiAuth.checkToken()
-                .then((info) => {
-                    setEmail(info.data.email)
-                })
-                .catch((e) => {console.log(e)})
-
-                setLoggedIn(true)
-                history.push('/cards')
-            })
-            .catch((res) => {
-                handleAuthStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'})
-                console.log(res)
-            })
-            .finally(() => setButtonState(false))
+    const handleLogin = ({ email, password }, setButtonState) => {
+        setButtonState(true);
+        apiAuth.signIn({ email, password })
+        .then(res => handleSignInRequest(res))
+        .catch((res) => {
+            handleAuthStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'});
+            console.log(res);
+        })
+        .finally(() => setButtonState(false))
     }
 
-    useEffect(() => {
-        api.getCards().then((res) => {
-            setCards(res)
-        }).catch((e) => {console.log(e)})
-    }, [])
+    // useEffect(() => {
+    //     api.getCards().then(res => setCards(res))
+    //     .catch(e => console.log(e))
+    // }, [])
 
-    useEffect(() => {
-        api.getUserInfo()
-            .then((res) => {
-                setCurrentUser(res)
-            })
-            .catch((e) => {console.log(e)})
-    }, [])
-
+    // useEffect(() => {
+    //     api.getUserInfo()
+    //         .then(res => setCurrentUser(res))
+    //         .catch(e => console.log(e))
+    // }, [])
+    
     useEffect(() => {
         apiAuth.checkToken()
-            .then((res) => {
-                setLoggedIn(true)
-                setEmail(res.data.email)
-                history.push('/cards')
-            })
-            .catch((e) => {console.log(e)})
+        .then((res) => {
+            setLoggedIn(true);
+            setEmail(res.data.email);
+            history.push('/cards');
+        })
+        .catch(e => console.log(e))
+    }, [])
+
+    useEffect(() => {
+        Promise.all([api.getUserInfo(), api.getCards()])
+        .then(([userData, cardsData]) => {
+            setCurrentUser(userData);
+            setCards(cardsData);
+        })
     }, [])
 
     return (
@@ -259,9 +262,10 @@ function App() {
             onAddPlace={handleAddPlaceSubmit}
         />
         <ImagePopup 
+            isOpen={isImagePopupOpen}
+            onClose={closeAllPopups}
             card={selectedCard}
             cardName={selectedCardName}
-            onClose={closeAllPopups}
         />
         {/* <PopupWithForm 
             name='card'

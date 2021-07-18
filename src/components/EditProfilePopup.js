@@ -5,20 +5,20 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
     const currentUser = useContext(CurrentUserContext);
 
-    const [name, setName] = useState('')
+    const [name, setName] = useState('');
 
-    const handleChangeName = (evt) => {
-        setName(evt.target.value)
+    const handleChangeName = (e) => {
+        setName(e.target.value);
     }
 
-    const [description, setDescription] = useState('')
+    const [description, setDescription] = useState('');
 
-    const handleChangeDescription = (evt) => {
-        setDescription(evt.target.value)
+    const handleChangeDescription = (e) => {
+        setDescription(e.target.value);
     }
 
-    const handleSubmit = (evt) => {
-        evt.preventDefault()
+    const handleSubmit = (e) => {
+        e.preventDefault();
         onUpdateUser({
             name,
             about: description,

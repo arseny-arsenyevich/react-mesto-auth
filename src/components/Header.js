@@ -2,15 +2,16 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLoggedIn, email }) {
-    const [burgerState, setBurgerState] = useState(false)
+    const [burgerState, setBurgerState] = useState(false);
 
     const handleChangeBurgerState = (e) => {
-        setBurgerState(!burgerState)
+        e.preventDefault();
+        setBurgerState(!burgerState);
     }
 
     const handleSignOut = () => {
-        setLoggedIn && setLoggedIn(false)
-        setLoggedIn && localStorage.removeItem('token')
+        setLoggedIn && setLoggedIn(false);
+        setLoggedIn && localStorage.removeItem('token');
     }
 
     return(

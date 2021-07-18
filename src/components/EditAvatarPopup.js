@@ -1,12 +1,16 @@
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 import PopupWithForm from './PopupWithForm'
 
 function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
-    const avatarUrl = useRef()
+    const [avatar, setAvatar] = useState('');
 
-    const handleSubmit = (evt) => {
-        evt.preventDefault()
-        onUpdateAvatar({avatar: avatarUrl.current.value})
+    const handleChangeAvatar = (e) => {
+        setAvatar(e.target.value);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onUpdateAvatar({ avatar });
     }
 
     return (
@@ -20,7 +24,8 @@ function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
         >
             <label className='form__field'>
                 <input 
-                    ref={avatarUrl}
+                    value={avatar}
+                    onChange={handleChangeAvatar}
                     type='url' 
                     className='form__input' 
                     name='avatar' id='form-avatar' 

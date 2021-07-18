@@ -1,21 +1,22 @@
 import React, {useState} from 'react'
 
 function Login ({ onSubmit }) {
-    const [email, setMail] = useState('')
-    const [password, setPassword] = useState('')
-    const [buttonState, setButtonState] = useState(false)
+    const [email, setMail] = useState('');
+    const [password, setPassword] = useState('');
+    const [buttonState, setButtonState] = useState(false);
 
-    const handleChangeMail = (evt) => {
-        setMail(evt.target.value)
+    const handleChangeMail = (e) => {
+        setMail(e.target.value);
     }
 
-    const handleChangePassword = (evt) => {
-        setPassword(evt.target.value)
+    const handleChangePassword = (e) => {
+        setPassword(e.target.value);
     }
 
 
-    const handleSubmit = (evt) => {
-        onSubmit({email, password}, evt, setButtonState)
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        onSubmit({email, password}, setButtonState);
     }
 
     return (

@@ -1,5 +1,5 @@
 class ApiAuth {
-    constructor ({baseUrl, headers}) {
+    constructor ({ baseUrl, headers }) {
         this._url = baseUrl
         this._headers = headers
     }  
@@ -8,7 +8,7 @@ class ApiAuth {
         return res.ok ? res.json() : Promise.reject(`${res.status}`)
     }
 
-    signUp({password, email}) {
+    signUp({ password, email }) {
         return fetch(`${this._url}/signup`, {
             method: 'POST',
             headers: this._headers,
@@ -19,7 +19,7 @@ class ApiAuth {
         }).then(this._checkResponse)
     }
 
-    signIn({password, email}) {
+    signIn({ password, email }) {
         return fetch(`${this._url}/signin`, {
             method: 'POST',
             headers: this._headers,

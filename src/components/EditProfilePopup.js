@@ -4,17 +4,35 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
     const currentUser = useContext(CurrentUserContext);
-
     const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [buttonState, setButtonState] = useState(false);
+    const [nameValidity, setNameValidity] = useState(true);
+    const [descriptionValidity, setDescriptionValidity] = useState(true);
+    const [nameError, setNameError] = useState('');
+    const [descriptionError, setDescriptionError] = useState('');
+
+    const checkFormValidity = (e, setError) => {
+        if (!nameValidity || !descriptionValidity) {
+            setError(e.target.validationMessage)
+            setButtonState(true)
+        }
+        else {
+            setError('')
+            setButtonState(false)
+        }
+    }
 
     const handleChangeName = (e) => {
         setName(e.target.value);
+        setNameValidity(e.target.validity.valid);
+        checkFormValidity(e, setNameError);
     }
-
-    const [description, setDescription] = useState('');
 
     const handleChangeDescription = (e) => {
         setDescription(e.target.value);
+        setDescriptionValidity(e.target.validity.valid);
+        checkFormValidity(e, setDescriptionError);
     }
 
     const handleSubmit = (e) => {
@@ -22,10 +40,19 @@ function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
         onUpdateUser({
             name,
             about: description,
-        });
+        },
+        setButtonState
+        );
+    }
+
+    const clearErrors = () => {
+        setNameValidity(true)
+        setDescriptionValidity(true)
+        setButtonState(false)
     }
 
     useEffect(() => {
+        clearErrors()
         setName(currentUser.name);
         setDescription(currentUser.about);
     }, [currentUser, isOpen]); 
@@ -38,13 +65,14 @@ function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
         onSubmit={handleSubmit}
         title='Редактировать профиль'
         buttonTxt='Сохранить'
+        buttonState={buttonState}
         >
             <label className='form__field'>
                 <input 
                     value={name}
                     onChange={handleChangeName}
                     type='text' 
-                    className='form__input' 
+                    className={`form__input ${!nameValidity && 'form__input-invalid'}`} 
                     name='name' 
                     id='form-name' 
                     placeholder='Имя' 
@@ -52,14 +80,16 @@ function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
                     minLength='2' 
                     maxLength='40' 
                 />
-                <span className='form__error form__error_type_form-name'></span>
+                <span
+                    className={`form__error ${!nameValidity && 'form__error_active'}`} 
+                >{nameError}</span>
             </label>
             <label className='form__field'>
                 <input 
                     value={description}
                     onChange={handleChangeDescription}
                     type='text' 
-                    className='form__input' 
+                    className={`form__input ${!descriptionValidity && 'form__input-invalid'}`} 
                     name='about' 
                     id='form-profession' 
                     placeholder='О себе' 
@@ -67,7 +97,9 @@ function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
                     minLength='2' 
                     maxLength='200' 
                 />
-                <span className='popup__error popup__error_type_form-profession'></span>
+                <span
+                    className={`form__error ${!descriptionValidity && 'form__error_active'}`} 
+                >{descriptionError}</span>
             </label>
     </PopupWithForm>
     )

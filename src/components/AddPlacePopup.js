@@ -3,12 +3,12 @@ import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup ({ onAddPlace, isOpen, onClose }) {
     const [name, setName] = useState('');
+    const [link, setLink] = useState('');
+    const [buttonState, setButtonState] = useState(false);
 
     const handleChangeName = (e) => {
         setName(e.target.value);
     }
-
-    const [link, setLink] = useState('');
 
     const handleChangeLink = (e) => {
         setLink(e.target.value);
@@ -17,7 +17,7 @@ function AddPlacePopup ({ onAddPlace, isOpen, onClose }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        onAddPlace({ name, link });
+        onAddPlace({ name, link }, setButtonState);
         setName('');
         setLink('');
     }
@@ -34,6 +34,7 @@ function AddPlacePopup ({ onAddPlace, isOpen, onClose }) {
             }}
             title='Новое место'
             buttonTxt='Создать'
+            buttonState={buttonState}
         >
             <label className='form__field'>
                 <input 

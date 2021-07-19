@@ -3,6 +3,7 @@ import PopupWithForm from './PopupWithForm'
 
 function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
     const [avatar, setAvatar] = useState('');
+    const [buttonState, setButtonState] = useState(false);
 
     const handleChangeAvatar = (e) => {
         setAvatar(e.target.value);
@@ -10,7 +11,8 @@ function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onUpdateAvatar({ avatar });
+
+        onUpdateAvatar({ avatar }, setButtonState);
     }
 
     return (
@@ -21,6 +23,7 @@ function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
             isOpen={isOpen}
             onClose={onClose}
             onSubmit={handleSubmit}
+            buttonState={buttonState}
         >
             <label className='form__field'>
                 <input 

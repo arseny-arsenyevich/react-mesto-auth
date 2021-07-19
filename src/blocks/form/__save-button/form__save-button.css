@@ -7,7 +7,7 @@
     margin: 44px auto 32px;
     transition: opacity .2s ease;
     background-color: black;
-    border: 0;
+    border: 1px solid black;
     border-radius: 2px;
     cursor: pointer;
     color: white;
@@ -15,9 +15,9 @@
 }
 
 .form__save-button:disabled {
-    border: 1px solid #E5E5E5;
+    border: 1px solid #C4C4C4;
     background-color: white;
-    color: #E5E5E5;
+    color: #C4C4C4;
     pointer-events: none;
 }
 

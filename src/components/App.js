@@ -84,9 +84,8 @@ function App() {
     }
     
     const handleDeletePopupOpen = (card) => {
-        setIsDeletePopupOpen(true)
-
-        setCardToBeDeleted(card)
+        setIsDeletePopupOpen(true);
+        setCardToBeDeleted(card);
     } 
 
     const handleAuthStatusPopup = ({ result, text }) => {
@@ -97,39 +96,40 @@ function App() {
         document.addEventListener('keydown', handleEscClose);
     }
     
-    const handleUpdateUser = (data) => {
+    const handleUpdateUser = (data, setButtonState) => {
+        setButtonState(true)
+
         api.redactProfile(data)
         .then((res) => {
             setCurrentUser(res);
             closeAllPopups();
         })
-        .catch(e => console.log(e))
+        .catch((e) => console.log(e))
+        .finally(() => setButtonState(false))
     }
 
-    const handleUpdateAvatar = (data) => {
+    const handleUpdateAvatar = (data, setButtonState) => {
+        setButtonState(true)
+
         api.redactAvatar(data)
         .then((res) => {
             setCurrentUser(res);
             closeAllPopups();
         })
-        .catch(e => console.log(e))
+        .catch((e) => console.log(e))
+        .finally(() => setButtonState(false))
     }    
 
-    const handleAddPlaceSubmit = data => {
+    const handleAddPlaceSubmit = (data, setButtonState) => {
+        setButtonState(true)
+
         api.addCard(data)
         .then(res => {
             setCards([res, ...cards]);
             closeAllPopups();
         })
-        .catch(e => console.log(e))
-    }
-
-    
-    const handleCardLike = (card) => {
-        const isLiked = card.likes.some((i) => i._id === currentUser._id);
-        api.changeLikeCardStatus(card._id, isLiked)
-        .then((newCard) => setCards(state => state.map((c) => c._id === card._id ? newCard : c)))
         .catch((e) => console.log(e))
+        .finally(() => setButtonState(false))
     }
 
     const handleCardDelete = (setButtonState) => {
@@ -141,6 +141,13 @@ function App() {
             closeAllPopups()
             setButtonState(false)
         })
+    }
+    
+    const handleCardLike = (card) => {
+        const isLiked = card.likes.some((i) => i._id === currentUser._id);
+        api.changeLikeCardStatus(card._id, isLiked)
+        .then((newCard) => setCards(state => state.map((c) => c._id === card._id ? newCard : c)))
+        .catch((e) => console.log(e))
     }
 
     const handleSignInRequest = (res) => {
@@ -167,7 +174,7 @@ function App() {
             , 500)
         })
         .catch((res) => {
-            handleAuthStatusPopup({ result: false, text: 'Что-то пошло не тапше! Попробуйте ещё раз.' });
+            handleAuthStatusPopup({ result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.' });
             console.log(res);
         })
         .finally(() => setButtonState(false))

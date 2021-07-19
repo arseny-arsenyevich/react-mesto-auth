@@ -29,7 +29,7 @@ function Register ({ onSubmit }) {
                 <input 
                     value={email}
                     onChange={handleChangeMail}
-                    type='text' 
+                    type='email' 
                     className='form__input form__input_theme_dark' 
                     name='email' 
                     id='form-email' 

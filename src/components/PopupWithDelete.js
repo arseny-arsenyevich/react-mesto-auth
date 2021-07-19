@@ -5,9 +5,9 @@ function PopupWithDelete ({ isOpen, onClose, onDelete }) {
     const [buttonState, setButtonState] = useState(false);
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        onDelete(setButtonState)
+        onDelete(setButtonState);
     }
 
     return (

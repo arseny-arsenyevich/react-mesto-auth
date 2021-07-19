@@ -1,5 +1,5 @@
 class Api {
-    constructor ({baseUrl, headers}) {
+    constructor ({ baseUrl, headers }) {
         this._url = baseUrl
         this._headers = headers
     }  
@@ -22,7 +22,7 @@ class Api {
         }).then(this._checkResponse)
     }   
     
-    redactProfile({name, about}) {
+    redactProfile({ name, about }) {
         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
@@ -33,7 +33,7 @@ class Api {
             }).then(this._checkResponse)
     }
 
-    redactAvatar({avatar}) {
+    redactAvatar({ avatar }) {
         return fetch(`${this._url}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
@@ -43,7 +43,7 @@ class Api {
             }).then(this._checkResponse)
     }
 
-    addCard({name, link}) {
+    addCard({ name, link }) {
         return fetch(`${this._url}/cards`, {
             method: 'POST',
             headers: this._headers,

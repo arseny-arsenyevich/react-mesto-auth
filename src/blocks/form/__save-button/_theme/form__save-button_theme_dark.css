@@ -8,7 +8,7 @@
 
 .form__save-button_theme_dark:disabled {
     border: 0;
-    color: #E5E5E5;
+    color: #C4C4C4;
     pointer-events: none;
     background-color: #7e7e85;
 }

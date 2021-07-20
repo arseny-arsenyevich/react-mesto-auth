@@ -4,7 +4,7 @@ import Input from './Input';
 function Login ({ onSubmit }) {
     const emailInput = useRef();
     const passwordInput = useRef();
-    const [buttonState, setButtonState] = useState(false);
+    const [buttonState, setButtonState] = useState(true);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,7 +48,7 @@ function Login ({ onSubmit }) {
                     type='submit' 
                     className='form__save-button form__save-button_theme_dark'
                 >
-                {!buttonState ? 'Войти' : 'Загрузка...'}
+                Войти
                 </button>
             </form>
         </div>

@@ -17,7 +17,7 @@ function PopupWithDelete ({ isOpen, onClose, onDelete }) {
                 onClose={onClose}
                 onSubmit={handleSubmit}
                 title='Вы уверены?'
-                buttonTxt={!buttonState ? 'Удалить' : 'Загрузка...'}
+                buttonTxt='Удалить'
                 buttonState={buttonState}
             >
         </PopupWithForm>

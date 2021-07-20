@@ -5,7 +5,7 @@ import Input from './Input';
 function Register ({ onSubmit }) {
     const emailInput = useRef();
     const passwordInput = useRef();
-    const [buttonState, setButtonState] = useState(false);
+    const [buttonState, setButtonState] = useState(true);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -49,7 +49,7 @@ function Register ({ onSubmit }) {
                     type='submit' 
                     className='form__save-button form__save-button_theme_dark'
                 >
-                {!buttonState ? 'Зарегистрироваться' : 'Загрузка...'}
+                Зарегистрироваться
                 </button>
             </form>
             <Link to='/sign-in' className='auth__if-registred'>Уже зарегистрированы? Войти</Link>

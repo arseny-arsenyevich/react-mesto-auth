@@ -1,15 +1,21 @@
 .header__container {
     border-bottom: 1px solid rgba(54, 54, 54, 0.7);
-    max-width: 577px;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 0 28px;
+    padding: 0 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
+@media screen and (min-width: 620px) {
+    .header__container {
+        padding: 0;
+    }
+}
+
 @media screen and (min-width: 1000px) {
     .header__container {
-        max-width: 830px;
+        max-width: 880px;
     }
 }

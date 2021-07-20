@@ -2,7 +2,7 @@
     display: none;
 }
 
-@media screen and (min-width: 577px) {
+@media screen and (min-width: 620px) {
     .header__burger_res_desktop {
         display: flex;
     }

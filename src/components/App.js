@@ -39,7 +39,7 @@ function App() {
         avatar: ''
     });
     const [email, setEmail] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(null);
     const history = useHistory();
     
     const handleEscClose = useCallback((e) => {
@@ -123,7 +123,7 @@ function App() {
     const handleAddPlaceSubmit = (data, setButtonState) => {
         setButtonState(true)
 
-        api.addCard(data)
+        return api.addCard(data)
         .then(res => {
             setCards([res, ...cards]);
             closeAllPopups();
@@ -150,15 +150,24 @@ function App() {
         .catch((e) => console.log(e))
     }
 
+    const checkToken = () => {
+        apiAuth.checkToken()
+        .then(info => {
+            setLoggedIn(true);
+            setEmail(info.data.email)
+            history.push('/cards');
+        })
+        .catch(e => {
+            setLoggedIn(false);
+            localStorage.removeItem('token');
+            console.log(e);
+        })
+    }
+
     const handleSignInRequest = (res) => {
         localStorage.setItem('token', res.token);
 
-        apiAuth.checkToken()
-        .then(info => setEmail(info.data.email))
-        .catch(e => console.log(e))
-
-        setLoggedIn(true);
-        history.push('/cards');
+        checkToken()
     }
 
     const handleRegister = ({ email, password }, setButtonState) => {
@@ -192,13 +201,7 @@ function App() {
     }
  
     useEffect(() => {
-        apiAuth.checkToken()
-        .then((res) => {
-            setLoggedIn(true);
-            setEmail(res.data.email);
-            history.push('/cards');
-        })
-        .catch(e => console.log(e))
+        checkToken()
     }, [])
 
     useEffect(() => {

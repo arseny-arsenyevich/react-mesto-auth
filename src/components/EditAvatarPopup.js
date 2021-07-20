@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import Input from './Input';
 import PopupWithForm from './PopupWithForm'
 
 function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
-    const [avatar, setAvatar] = useState('');
+    const avatarInput = useRef();
     const [buttonState, setButtonState] = useState(false);
-
-    const handleChangeAvatar = (e) => {
-        setAvatar(e.target.value);
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        onUpdateAvatar({ avatar }, setButtonState);
+        onUpdateAvatar({ avatar: avatarInput.current.value }, setButtonState);
     }
+
+    useEffect(() => {
+        setButtonState(true);
+        avatarInput.current.value= '';
+    }, [isOpen])
 
     return (
         <PopupWithForm 
@@ -25,18 +27,15 @@ function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
             onSubmit={handleSubmit}
             buttonState={buttonState}
         >
-            <label className='form__field'>
-                <input 
-                    value={avatar}
-                    onChange={handleChangeAvatar}
-                    type='url' 
-                    className='form__input' 
-                    name='avatar' id='form-avatar' 
-                    placeholder='Ссылка на картинку' 
-                    required 
-                />
-                <span className='form__error form__error_type_form-avatar'></span>
-            </label>
+            <Input 
+                name='avatar'
+                type='url'
+                inputRef={avatarInput}
+                validities={[avatarInput]}
+                setButtonState={setButtonState}
+                placeholder='Ссылка на картинку'
+                isOpen={isOpen}
+            />
         </PopupWithForm>
     )
 }

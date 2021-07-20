@@ -3,13 +3,13 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
-    margin: 7px 0 31px;
+    margin: 8px 0 32px;
     text-align: center;
     white-space: normal;
     overflow-wrap: break-word;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 620px) {
     .profile__profession {
         max-width: 400px;
     }

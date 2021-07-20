@@ -1,60 +1,28 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import PopupWithForm from './PopupWithForm'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import Input from './Input';
 
 function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
     const currentUser = useContext(CurrentUserContext);
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+    const nameInput = useRef();
+    const descriptionInput = useRef();
     const [buttonState, setButtonState] = useState(false);
-    const [nameValidity, setNameValidity] = useState(true);
-    const [descriptionValidity, setDescriptionValidity] = useState(true);
-    const [nameError, setNameError] = useState('');
-    const [descriptionError, setDescriptionError] = useState('');
-
-    const checkFormValidity = (e, setError) => {
-        if (!nameValidity || !descriptionValidity) {
-            setError(e.target.validationMessage)
-            setButtonState(true)
-        }
-        else {
-            setError('')
-            setButtonState(false)
-        }
-    }
-
-    const handleChangeName = (e) => {
-        setName(e.target.value);
-        setNameValidity(e.target.validity.valid);
-        checkFormValidity(e, setNameError);
-    }
-
-    const handleChangeDescription = (e) => {
-        setDescription(e.target.value);
-        setDescriptionValidity(e.target.validity.valid);
-        checkFormValidity(e, setDescriptionError);
-    }
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         onUpdateUser({
-            name,
-            about: description,
+            name: nameInput.current.value,
+            about: descriptionInput.current.value,
         },
         setButtonState
         );
     }
 
-    const clearErrors = () => {
-        setNameValidity(true)
-        setDescriptionValidity(true)
-        setButtonState(false)
-    }
-
     useEffect(() => {
-        clearErrors()
-        setName(currentUser.name);
-        setDescription(currentUser.about);
+        setButtonState(false)
+        nameInput.current.value = currentUser.name;
+        descriptionInput.current.value = currentUser.about;
     }, [currentUser, isOpen]); 
 
     return (
@@ -67,7 +35,29 @@ function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
         buttonTxt='Сохранить'
         buttonState={buttonState}
         >
-            <label className='form__field'>
+            <Input 
+                name='name'
+                type='text'
+                inputRef={nameInput}
+                validities={[nameInput, descriptionInput]}
+                setButtonState={setButtonState}
+                placeholder='Имя'
+                minLength='2'
+                maxLength='40'
+                isOpen={isOpen}
+            />
+            <Input 
+                name='description'
+                type='text'
+                inputRef={descriptionInput}
+                validities={[descriptionInput, nameInput]}
+                setButtonState={setButtonState}
+                placeholder='О себе'
+                minLength='2'
+                maxLength='200'
+                isOpen={isOpen}
+            />
+            {/* <label className='form__field'>
                 <input 
                     value={name}
                     onChange={handleChangeName}
@@ -99,8 +89,7 @@ function EditProfilePopup ({ onUpdateUser, isOpen, onClose }) {
                 />
                 <span
                     className={`form__error ${!descriptionValidity && 'form__error_active'}`} 
-                >{descriptionError}</span>
-            </label>
+                >{descriptionError}</span> */}
     </PopupWithForm>
     )
 }

@@ -1,23 +1,19 @@
-import React, {useState} from 'react'
+import React, { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import Input from './Input';
 
 function Register ({ onSubmit }) {
-    const [email, setMail] = useState('');
-    const [password, setPassword] = useState('');
+    const emailInput = useRef();
+    const passwordInput = useRef();
     const [buttonState, setButtonState] = useState(false);
 
-    const handleChangeMail = (e) => {
-        setMail(e.target.value);
-    }
-
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-    }
-
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        onSubmit({ email, password }, setButtonState);
+        onSubmit({ 
+            email: emailInput.current.value, 
+            password: passwordInput.current.value
+        }, setButtonState);
     }
 
     return (
@@ -25,34 +21,28 @@ function Register ({ onSubmit }) {
             <h2 className='auth__heading'>Регистрация</h2>
             <form onSubmit={handleSubmit} className='form'>
                 <fieldset className='form__input-container form__input-container_theme_dark'>
-                <label className='form__field'>
-                <input 
-                    value={email}
-                    onChange={handleChangeMail}
-                    type='email' 
-                    className='form__input form__input_theme_dark' 
-                    name='email' 
-                    id='form-email' 
-                    placeholder='Email' 
-                    required 
-                    minLength='2' 
-                    maxLength='60' 
+                <Input 
+                    name='email-register'
+                    type='email'
+                    inputRef={emailInput}
+                    validities={[emailInput, passwordInput]}
+                    setButtonState={setButtonState}
+                    placeholder='Email'
+                    minLength='4'
+                    maxLength='30'
+                    additionalClass='form__input_theme_dark'
                 />
-                <span className='form__error form__error_type_form-place'></span>
-            </label>
-            <label className='form__field'>
-                <input 
-                    value={password}
-                    onChange={handleChangePassword}
-                    type='password' 
-                    className='form__input form__input_theme_dark' 
-                    name='password' 
-                    id='form-password' 
-                    placeholder='Пароль' 
-                    required 
+                <Input 
+                    name='password-register'
+                    type='password'
+                    inputRef={passwordInput}
+                    validities={[passwordInput, emailInput]}
+                    setButtonState={setButtonState}
+                    placeholder='Пароль'
+                    minLength='6'
+                    maxLength='30'
+                    additionalClass='form__input_theme_dark'
                 />
-                <span className='form__error form__error_type_form-link'></span>
-            </label>
                 </fieldset>
                 <button 
                     disabled={buttonState} 

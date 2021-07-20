@@ -10,7 +10,7 @@
     transition: height .2s ease, visibility .2s linear;
 }
 
-@media screen and (min-width: 577px) {
+@media screen and (min-width: 620px) {
     .header__burger_res_mobile {
         display: none;
     }

@@ -1,0 +1,8 @@
+.header__link_loading {
+    position: fixed;
+    z-index: 2;
+}
+
+.header__link_loading:hover {
+    opacity: 1;
+}

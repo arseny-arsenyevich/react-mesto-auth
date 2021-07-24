@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLoggedIn, email }) {
+function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLoggedIn, email, loading }) {
     const [burgerState, setBurgerState] = useState(false);
 
     const handleChangeBurgerState = (e) => {
@@ -15,7 +15,7 @@ function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLogged
     }
 
     return(
-        <header className='header header_position_center' aria-label='логотип'>
+        <header className='header header_position_center' aria-label='шапка'>
             {headerBurger && <div className={`header__burger 
                 header__burger_res_mobile 
                 ${burgerState && 'header__burger_opened'}`}
@@ -29,12 +29,13 @@ function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLogged
                     {headerLinkTitle}
                 </Link>
             </div>}
+            <div className={`header__loading ${loading && 'header__loading_active'}`} />
             <div className='header__container'>
                 <Link 
-                    to="/cards"  
-                    className='header__link'
+                    to={`${!loading && '/cards'}`}  
+                    className={`header__link ${loading && 'header__link_loading'}`}
                 >
-                    <img className='header__logo' src={logoPic} alt='логотип' />
+                    <img className={`header__logo ${loading && 'header__logo_loading'}`} src={logoPic} alt='логотип' />
                 </Link>
                 <div className={`header__burger ${headerBurger && 'header__burger_res_desktop'}`}>
                     {headerBurger && <p className='header__email'>{email}</p>}

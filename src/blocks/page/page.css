@@ -9,9 +9,3 @@
     min-height: 100vh;
     height: 100%;
 }
-
-@media screen and (min-width: 500px) {
-    .page {
-        min-height: 100vh;
-    }
-}

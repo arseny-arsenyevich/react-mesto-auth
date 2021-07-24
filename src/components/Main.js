@@ -27,7 +27,7 @@ function Main ({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardLike, onC
             </section>
 
             <section className='elements' aria-label='места'>
-                <p className='elements__empty'>Добавьте картинки</p>
+                <p className={`elements__empty ${!cards.length && 'elements__empty_active'}`}>Добавьте картинки</p>
                 <ul className='elements__table'>
                     {cards.map((card) => {
                         return (

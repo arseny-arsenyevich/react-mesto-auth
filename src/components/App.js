@@ -18,6 +18,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
 import apiAuth from '../utils/apiAuth';
+import { loginService } from './LoginService';
 
 function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -40,6 +41,7 @@ function App() {
     });
     const [email, setEmail] = useState('');
     const [loggedIn, setLoggedIn] = useState(null);
+    const [loading, setLoading] = useState(true);
     const history = useHistory();
     
     const handleEscClose = useCallback((e) => {
@@ -138,8 +140,8 @@ function App() {
         .then(() => setCards(state => state.filter(c => c._id !== cardToBeDeleted._id)))
         .catch(e => console.log(e))
         .finally(() => {
-            closeAllPopups()
-            setButtonState(false)
+            closeAllPopups();
+            setButtonState(false);
         })
     }
     
@@ -151,10 +153,8 @@ function App() {
     }
 
     const checkToken = () => {
-        apiAuth.checkToken()
-        .then(info => {
-            setLoggedIn(true);
-            setEmail(info.data.email)
+        loginService.checkToken()
+        .then(() => {
             history.push('/cards');
         })
         .catch(e => {
@@ -164,22 +164,16 @@ function App() {
         })
     }
 
-    const handleSignInRequest = (res) => {
-        localStorage.setItem('token', res.token);
-
-        checkToken()
-    }
-
     const handleRegister = ({ email, password }, setButtonState) => {
         setButtonState(true);
-        apiAuth.signUp({ email, password })
+        loginService.signUp({ email, password })
         .then(() => {
             handleAuthStatusPopup({ result: true, text: 'Вы успешно зарегистрировались!' });
             // Авторизация при успешной регистрации
             setTimeout(() =>
-            apiAuth.signIn({ email, password })
-            .then(data => handleSignInRequest(data))
-            .catch(() => history.push('/sign-in'))
+                loginService.signIn({ email, password })
+                .then(data => checkToken(data))
+                .catch(() => history.push('/sign-in'))
             , 500)
         })
         .catch((res) => {
@@ -191,25 +185,30 @@ function App() {
     
     const handleLogin = ({ email, password }, setButtonState) => {
         setButtonState(true);
-        apiAuth.signIn({ email, password })
-        .then(res => handleSignInRequest(res))
+        loginService.signIn({ email, password })
+        .then(res => checkToken(res))
         .catch((res) => {
-            handleAuthStatusPopup({result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'});
+            handleAuthStatusPopup({ result: false, text: 'Что-то пошло не так! Попробуйте ещё раз.' });
             console.log(res);
         })
         .finally(() => setButtonState(false))
     }
- 
+
     useEffect(() => {
-        checkToken()
+        loginService.on(() => { setLoggedIn(true) });
+        loginService.on((info) => { setEmail(info?.data?.email) });
+        checkToken();
     }, [])
 
     useEffect(() => {
+        setLoading(true)
         Promise.all([api.getUserInfo(), api.getCards()])
         .then(([userData, cardsData]) => {
             setCurrentUser(userData);
             setCards(cardsData);
         })
+        .catch((e) => console.log(e))
+        .finally(() => setLoading(false))
     }, [])
 
     return (
@@ -239,6 +238,7 @@ function App() {
             headerLinkTitle='Выйти' 
             headerLink='/sign-in' 
             email={email}
+            loading={loading}
             headerBurger
         />
         <Main 

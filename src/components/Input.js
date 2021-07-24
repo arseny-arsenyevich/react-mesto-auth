@@ -18,7 +18,7 @@ function Input ({
     const [inputTimer, setInputTimer] = useState(false);
     const history = useHistory();
 
-    let myTimer
+    let validationTimer
 
     const checkFormValidity = (evt) => {
         // console.log(validities[0].current.validity.valid);
@@ -34,9 +34,9 @@ function Input ({
     }
     
     const handleChange = useCallback((e) => {
-        clearTimeout(myTimer);
+        clearTimeout(validationTimer);
         setInputTimer(false);
-        myTimer = setTimeout(() => setInputTimer(true), 1000)
+        validationTimer = setTimeout(() => setInputTimer(true), 1000)
         setJustOpened(true);
         checkFormValidity(e);
     }, [])
@@ -47,11 +47,7 @@ function Input ({
 
         return () => inputRef?.current?.removeEventListener('input', handleChange);
     }, [isOpen, history])
-
-    // useEffect(() => {
-    //     se
-    // }, [])
-
+    
     return (            
     <label className='form__field'>
     <input 

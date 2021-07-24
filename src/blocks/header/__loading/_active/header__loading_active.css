@@ -1,0 +1,4 @@
+.header__loading_active {
+    visibility: visible;
+    opacity: 1;
+}

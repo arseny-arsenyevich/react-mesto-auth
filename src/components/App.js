@@ -17,7 +17,6 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
-import apiAuth from '../utils/apiAuth';
 import { loginService } from './LoginService';
 
 function App() {

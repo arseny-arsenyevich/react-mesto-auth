@@ -1,5 +1,4 @@
 .header__link_loading {
-    position: fixed;
     z-index: 2;
     pointer-events: none;
 }

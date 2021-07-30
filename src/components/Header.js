@@ -35,7 +35,10 @@ function Header ({ logoPic, headerLink, headerLinkTitle, headerBurger, setLogged
                     to={`${!loading && '/cards'}`}  
                     className={`header__link ${loading && 'header__link_loading'}`}
                 >
-                    <img className={`header__logo ${loading && 'header__logo_loading'}`} src={logoPic} alt='логотип' />
+                    <img 
+                        className={`header__logo ${loading && 'header__logo_loading'}`} 
+                        src={logoPic} alt='логотип' 
+                    />
                 </Link>
                 <div className={`header__burger ${headerBurger && 'header__burger_res_desktop'}`}>
                     {headerBurger && <p className='header__email'>{email}</p>}

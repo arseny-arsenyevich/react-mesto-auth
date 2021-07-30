@@ -212,7 +212,7 @@ function App() {
 
     return (
     <div className='App'>
-    <div className='page'>
+    <div className={`page ${loading && 'page_loading'}`}>
     <CurrentUserContext.Provider value={currentUser}>
 
     <Switch>

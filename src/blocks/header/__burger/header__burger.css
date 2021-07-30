@@ -1,6 +1,7 @@
 .header__burger {
     display: flex;
     justify-content: space-between;
+    justify-self: end;
     flex-direction: row;
     padding: 32px 0 0;
 }

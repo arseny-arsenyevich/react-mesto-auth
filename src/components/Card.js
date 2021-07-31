@@ -19,7 +19,7 @@ function Card ({ card, onDelete, onCardClick, onCardLike }) {
             <div className='elements__trash-icon' />
         </button>
         <div className='elements__background'>
-            <img className='elements__picture' onClick={() => {onCardClick([card.link, card.name])}} src={card.link} alt='пейзаж' />
+            <img className='elements__picture' onClick={() => {onCardClick([card.link, card.name, card._id])}} src={card.link} alt='пейзаж' />
         </div>
         <div className='elements__text-area'>
             <h2 className='elements__title'>{card.name}</h2>

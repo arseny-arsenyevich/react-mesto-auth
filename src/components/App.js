@@ -26,6 +26,7 @@ function App() {
     const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
     const [selectedCardName, setSelectedCardName] = useState(null);
+    const [selectedCardId, setSelectedCardId] = useState(null);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
     const [cardToBeDeleted, setCardToBeDeleted] = useState(null);
     const [isAuthStatusPopupOpen, setIsAuthStatusPopupOpen] = useState(false);
@@ -75,15 +76,7 @@ function App() {
         
         document.addEventListener('keydown', handleEscClose);
     }
-    
-    const handleCardClick = ([link, description]) => {
-        setIsImagePopupOpen(true);
-        setSelectedCard(link);
-        setSelectedCardName(description);
-        
-        document.addEventListener('keydown', handleEscClose);
-    }
-    
+
     const handleDeletePopupOpen = (card) => {
         setIsDeletePopupOpen(true);
         setCardToBeDeleted(card);
@@ -132,6 +125,22 @@ function App() {
         .catch((e) => console.log(e))
         .finally(() => setButtonState(false))
     }
+        
+    const handleCardClick = ([link, description, id]) => {
+        setSelectedCardId(id);
+        setSelectedCard(link);
+        setIsImagePopupOpen(true);
+        setSelectedCardName(description);
+        
+        document.addEventListener('keydown', handleEscClose);
+    }
+    
+    const handleCardLike = (card) => {
+        const isLiked = card.likes.some((i) => i._id === currentUser._id);
+        api.changeLikeCardStatus(card._id, isLiked)
+        .then((newCard) => setCards(state => state.map((c) => c._id === card._id ? newCard : c)))
+        .catch((e) => console.log(e))
+    }
 
     const handleCardDelete = (setButtonState) => {
         setButtonState(true)
@@ -142,13 +151,6 @@ function App() {
             closeAllPopups();
             setButtonState(false);
         })
-    }
-    
-    const handleCardLike = (card) => {
-        const isLiked = card.likes.some((i) => i._id === currentUser._id);
-        api.changeLikeCardStatus(card._id, isLiked)
-        .then((newCard) => setCards(state => state.map((c) => c._id === card._id ? newCard : c)))
-        .catch((e) => console.log(e))
     }
 
     const checkToken = () => {
@@ -279,6 +281,7 @@ function App() {
             onClose={closeAllPopups}
             card={selectedCard}
             cardName={selectedCardName}
+            cardId={selectedCardId}
         />
         <PopupWithDelete 
             isOpen={isDeletePopupOpen}

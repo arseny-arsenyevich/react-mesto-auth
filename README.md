@@ -1,4 +1,4 @@
-# [Mesto React](https://arseny-arsenyevich.github.io/react-mesto-auth/)
+# [Mesto React with Auth](https://arseny-arsenyevich.github.io/react-mesto-auth/)
 
 ![Flutter](https://img.shields.io/badge/status-release-<COLOR>)
 

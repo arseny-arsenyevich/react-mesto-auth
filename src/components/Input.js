@@ -21,7 +21,7 @@ function Input ({
     let validationTimer
 
     const checkFormValidity = (evt) => {
-        // console.log(validities[0].current.validity.valid);
+        // console.log(inputRef.current.validity.valid);
         if (validities.some(a => !a.current.validity.valid)) {
             setInputError(evt.target.validationMessage);
             // console.log(evt.target.validationMessage);
@@ -55,7 +55,7 @@ function Input ({
         className={`form__input ${additionalClass} ${ 
             (inputTimer) &&
             (justOpened !== null) && 
-            (!validities[0].current?.validity.valid && 'form__input-invalid')}`} 
+            (!inputRef.current?.validity.valid && 'form__input-invalid')}`} 
         id={`form-${name}`}
         placeholder={placeholder}
         minLength={minLength}
@@ -66,7 +66,7 @@ function Input ({
     <span className={`form__error ${
         (inputTimer) &&
         (justOpened !== null) && 
-        (!validities[0].current?.validity.valid && 'form__error_active')}`} >{inputError}</span>
+        (!inputRef.current?.validity.valid && 'form__error_active')}`} >{inputError}</span>
     </label>)
 }
 

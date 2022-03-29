@@ -14,6 +14,7 @@
 + React
 
 ## **Технологии**
+кал жопа кал говно жопа
 + React хуки
 + React Router
 + LocalStorage
